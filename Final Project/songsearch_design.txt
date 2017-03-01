@@ -1,0 +1,15 @@
+HW6 Song Search Design
+
+In this project, in order to pass in the whole list of variables 
+I will be using vector to pass in the songs. In each vector, each
+ word of the song will be added in a trie. Each component of the 
+trie will be holding a pointer to the part of the song in which the
+ word is being used and the frequency of one word in a specific song
+
+When searching for a word, the code will be going through the song 
+vector in each song individually to the desired word and checking
+ indexes of frequency of word use, if the word is used in more than
+ 10 songs then the search will limit the output songs to the top ten 
+songs that come up, and if the (i.e.) 10th and 11th song have the
+ searched word the same number of times then at random one of two
+ songs will be chosen to close the 10 song list. 

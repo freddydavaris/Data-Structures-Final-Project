@@ -1,0 +1,19 @@
+#
+# Makefile for SongSearch, Assignment 6
+#
+CXX = clang++
+FLAGS = -Wall -g3
+
+songsearch: Hashtable.cpp Hashtable.h main.cpp hashfunc.cpp hashfunc.h Song.cpp Song.h WordList.h WordList.cpp
+	${CXX} ${FLAGS} -o songsearch Hashtable.cpp main.cpp hashfunc.cpp Song.cpp WordList.cpp 
+	
+clean:
+	rm -f songsearch
+
+provide_design:
+	provide comp15 hw6_design songsearch_design.txt
+
+provide:
+	provide comp15 hw6 ReadMe.md Hashtable.cpp Hashtable.h main.cpp hashfunc.cpp hashfunc.h Song.cpp Song.h WordList.h WordList.cpp
+	
+

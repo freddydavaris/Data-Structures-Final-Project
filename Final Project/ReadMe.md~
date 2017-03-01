@@ -1,0 +1,67 @@
+# ReadMe for COMP 15 HW6
+## Song Search 
+
+Every assignment you submit you will include a ReadMe file. The name
+could be ReadMe, readme, Read-me.txt, readME, ReadMe.md (the “.md”
+stands for “markdown,” which allows lightweight formatting) or almost
+anything you like that has the word read followed by the word me. Exact
+spelling is not important, the contents are.
+
+The purpose of the ReadMe file is the same as the little paper insert
+you get in a new appliance -- to give the reader an introduction and
+overview of the product.
+
+Your ReadMe file for the assignments **must** include:
+
+1.  The purpose of your program
+
+This program reads in a txt file containing 170,000 songs. Each song has its lyrics undeneath. The purpose
+of this program is to read in all the files hash them into hashtables and when the user typed in the word it would 
+print out the top 10 songs and all of their respetive contexts in which the word is being used. 
+
+2.  List of files with one/or two-line summary
+
+Hashtable.cpp/h : Hashtable implementation in which the all words are stored as alpha only. It includes two structs,
+		  of hasheditems and hashedinfos.
+		  
+WordList.cpp/h  : Wordlist is a class implementation in which we call functions like sorting the top-10 song list
+		  searching for the context artist and title of a song after a song has been input, etc.
+		  
+Song.cpp/h 	: Song is a class implementation of a song in which we store song title ,artist and a vector
+		  of all the lyircs of the song. Songs are put in a vector which holds songs. 
+hashfunc.cpp    : Contains two function definitions one of which we used to convert the string into a int before
+		  we hash it into a hashtable
+
+3.  How to compile it (saying "use included Makefile" is ok)
+
+Use included Makefile.
+
+4.  Outline of data structure (depending on the assignment)
+
+In this project many data structures were used in order for the final output to be generated. A song class which held
+all the information about the songs was held into a vector of songs which was built as songs were read into the database.
+This song class was pointed to by a pointer to the song that was held in a struct of song information. This struct held a 
+pointer to the song class and the number of times every word of every song was used in the song. 
+
+
+5.  Outline of algorithm (depending on the assignment)
+
+
+6.  A list of people who materially helped you on the assignment. If
+    you worked with a friend and you shared ideas, you need to 
+    list that person, e.g., "Josh Whedon helped me on this assignment".
+    You do not need to list TAs, or professors, but you may feel free
+    to do so.
+    
+    (-)
+
+The ReadMe file shows the reader, in a quick glance, what the program is
+about and gives a general idea of how it works. For short programs the
+readme file will be short, for more complicated programs the readme file
+will be longer.
+
+Use outline form rather than long discursive paragraphs. A ReadMe file
+is an overview.
+
+There is no correct readme format; within these guidelines, devise your
+own style.

@@ -1,0 +1,220 @@
+/*
+ * WordList.cpp
+ *
+ *  Created on: Dec 3, 2014
+ *      Author: 
+ */
+
+#include "WordList.h"
+
+using namespace std;
+
+WordList::WordList() {
+	
+}
+
+WordList::~WordList() {
+	
+}
+
+string WordList::alpha_only(string s){
+        ostringstream ss;
+        for (size_t i=0;i<s.length();i++) {
+                if (isalnum(s[i])){
+                        ss << (char)(tolower(s[i]));
+                }
+        }
+        return ss.str();
+}
+
+void WordList::read_lyrics(const char * filename, bool show_progress)
+{	
+						// vector of words (all lyrics)
+        ifstream in(filename);			// creates an input stream
+        int song_count = 0;			// for progress indicator
+	string artist, title, word;
+
+	// -- While more data to read...
+	while ( ! in.eof() ) 
+	{
+		
+		
+		// -- First line is the artist
+		getline(in, artist);
+		if (in.fail()) break;
+
+		// -- Second line is the title
+		getline(in, title);
+		if (in.fail()) break;
+
+		if ( show_progress )
+		{
+			song_count++;
+			if (song_count % 10000 == 0) {
+				cout << "At "       << song_count << 
+					" Artist: " << artist     << 
+					" Title:"   << title << endl;
+			}
+		}
+		
+		// make new song and set artist values
+		
+		
+		Song *s1 = new Song;  // HERE
+		s1->setSongName(title); 
+		s1->setSongArtist(artist);
+		
+		
+		list_songs.push_back(s1);
+		
+		SongInfo song_info; 
+		song_info.freq = 1; 
+		song_info.pointer_to_Song_Class = s1;
+		
+		// -- Then read all words until we hit the 
+		// -- special <BREAK> token
+		
+		//cout << "NEW SONG  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
+		while ( in >> word && word != "<BREAK>" ){
+			//int empty = 1;
+		bool wordfound = false; 
+
+			s1->insert(word);
+			//  insert in lyrics
+			word = alpha_only(word);
+ 			SongInfo *tempPointer = table.find(word);
+			if (table.find(word) != NULL) {
+			}
+		//	cerr << "INSERTING: " << word << endl;
+		//	cerr << "POINTING TO: " << tempPointer << endl;
+			if (tempPointer != NULL){
+					
+				for (int k = 0; k < 11; k++){
+
+					if (tempPointer[k].pointer_to_Song_Class != NULL && 
+						tempPointer[k].pointer_to_Song_Class->getSongArtist() == song_info.pointer_to_Song_Class->getSongArtist() &&
+						tempPointer[k].pointer_to_Song_Class->getSongName() == song_info.pointer_to_Song_Class->getSongName()){
+						tempPointer[k].freq++;
+						wordfound = true; 
+						Sort(tempPointer);
+						break;
+					
+					}
+				}
+					if (wordfound == false) {
+			//	cout << "NEW woooooooooord oleoleoleofoelferdfxv !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
+
+
+						for (int y = 0; y < 11; y++) {
+					//		cout << " THIS IS Y !!!!!!!!!!!!!!!!!! ------------> " << y << endl;
+							if (y == 10){
+								tempPointer[y] = song_info;
+								Sort(tempPointer);
+								break;
+							}
+							else if (tempPointer[y].pointer_to_Song_Class == NULL){
+								tempPointer[y] = song_info;
+								Sort(tempPointer);
+								break;
+							}
+							
+						// tempPointer[empty] = song_info;
+// 						if (empty < 10){
+// 							empty++;
+// 						}
+						//break;
+						}
+					}
+			}
+			else {
+			
+			SongInfo *top_searches = new SongInfo[11];
+			//cout << "NEW ADDRESS: " << top_searches << endl;
+			for (int i = 0 ; i < 11; i++) { 
+			//	cout << "wtf is going on EEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << endl;
+
+				top_searches[i].freq = 0; 
+				top_searches[i].pointer_to_Song_Class = NULL;
+			}
+			word = alpha_only(word); 
+			top_searches[0] = song_info;
+		//	cerr << "FINAL WORD CHECK: " << word << " "<< top_searches << endl;
+			table.insert(word, top_searches);
+			}
+			//	
+			// -- Found a word
+			// pass it into the hash table
+			// if already in the hash table check if it is in top 10 on the vector of songs
+		}
+		// -- Important: skip the newline left behind
+		in.ignore();
+	}
+}
+
+
+
+	
+void WordList::search()
+{	
+	string searched_word;
+	
+	cin >> searched_word;
+	int counter = 0; 
+	
+	while (searched_word != "<BREAK>") {
+		SongInfo *temp = table.find(searched_word);
+		if (temp != NULL) {
+			for (int i = 0; i < 10 ; i++) {
+			//cerr << temp[i].freq << " ";
+			//	for (int k = 0; k < temp[i].freq; k++) {
+					//cout << "Title: " << temp[i].pointer_to_Song_Class->getSongName() << endl;
+				//ma	cout << "Artist: " << temp[i].pointer_to_Song_Class->getSongArtist() << endl;
+					/*while (temp[i].pointer_to_Song_Class->words.at(k) == searched_word) {
+					
+					
+					
+						while (temp[i].pointer_to_Song_Class != NULL && counter < 10) {
+							cout << temp[i].pointer_to_Song_Class->words.at(k-5+counter) << " ";
+							counter++;
+						}
+					}	*/		
+				cout << endl; 
+			//m	}
+			}
+		}
+ 		cout << endl << "<END OF REPORT>" << endl; 	
+		cin >> searched_word; 
+		//searched_word = alpha_only(searched_word); 
+	}
+	
+}
+
+void WordList::Print(int index){
+	list_songs.at(index)->print(); 
+}
+
+void WordList::Sort(SongInfo *top_searches){
+
+	SongInfo temp;
+	// loop that goes through all elements of the array starting from the second one
+	for (int i = 1; i < 11; i++){
+		// compares the checked element with all of its previous elements and swaps it
+		// everytime it is bigger than any of the preceding ones. 
+			for (int k = i; top_searches[k].freq > top_searches[k-1].freq ; k--) {
+				//cout << top_searches[k].freq << " > " << top_searches[k-1].freq << endl;
+				if (top_searches[k].freq > top_searches[k-1].freq) {
+					// swaps adjacent integers if the right one is greater
+					// than the left one
+					temp.pointer_to_Song_Class = top_searches[k-1].pointer_to_Song_Class;
+					temp.freq = top_searches[k-1].freq;
+					
+					top_searches[k-1].freq = top_searches[k].freq;
+					top_searches[k-1].pointer_to_Song_Class = top_searches[k].pointer_to_Song_Class;
+					
+					top_searches[k].pointer_to_Song_Class = temp.pointer_to_Song_Class;
+					top_searches[k].freq = temp.freq;
+				}
+			}
+			
+	}
+}
